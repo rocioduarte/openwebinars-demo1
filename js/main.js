@@ -1,7 +1,5 @@
 (function(window, document) {
 
-    'use strict';
-
         // {Object} - Rutas y descripción de las imágenes.
     var config,
 
@@ -32,17 +30,19 @@
     };
 
 
-    cells = document.querySelectorAll('.grid-cell');
-
-    for (var i = 0; i < cells.length; i++) {
-        cells[i].addEventListener('click', clickHandler, false);
-    }
-
-    setImages(config, cells);
+// TODO: Usar algún metodo del DOM para obtener todas celdas de la cuadrícula.
 
 
 
-    //---------------------------- Funciones -----------------------------------
+// TODO: Añadir manejadores del evento 'click' a todas las celdas.
+
+
+
+// TODO: Llamada a la función principal `setImages()`.
+
+
+
+//---------------------------- Funciones ----------------------------------
 
     /**
      * Crea imágenes y las añade a las celdas.
@@ -59,14 +59,10 @@
             i;
 
         for (i = 0; i < size; i += 2) {
-            img1 = new Image();
-            img2 = new Image();
-            img1.draggable = false;
-            img2.draggable = false;
-            img1.src = createImgPath(config, set1[i / 2]);
-            img2.src = createImgPath(config, set2[i / 2]);
-            cells[i].appendChild(img1);
-            cells[i + 1].appendChild(img2);
+            // TODO: Crear todas las imágenes y añadirlas a las celdas de
+            // la cuadrícula. Las imágenes se van añadiendo de dos en dos,
+            // configurando la ruta de cada imagen a partir de los conjuntos de
+            // números aleatorios `set1` y `set2`.
         }
     }
 
@@ -92,22 +88,17 @@
      * @param {Number} size - el tamaño del array.
      */
     function createRandomSet(size) {
-        var xs, i, j, k;
+        var arr, i;
 
-        for (i = 1, xs = []; i <= size; i++) {
-            xs[i - 1] = i;
+        for (i = 1, arr = []; i <= size; i++) {
+            arr[i - 1] = i;
         }
 
-        i = size;
-        while (i > 1) {
-            i--;
-            j = Math.random() * i | 0;
-            k = xs[i];
-            xs[i] = xs[j];
-            xs[j] = k;
-        }
+        arr.sort(function() {
+            return Math.random() - Math.random();
+        });
 
-        return xs;
+        return arr;
     }
 
     /**
@@ -120,29 +111,30 @@
             item1,
             item2;
 
-        if (!locked) {
-            self.removeEventListener('click', clickHandler, false);
-            img = self.firstElementChild;
-            img.style.opacity = 1;
-            imgName = img.src.split('/').pop();
-            couple.push({cell: self, img: img, imgName: imgName});
+        if (/* TODO: Comprobar si está levantada la bandera de bloqueo. */) {
 
-            if (couple.length === 2) {
-                locked = true;
-                item1 = couple.pop();
-                item2 = couple.pop();
+            // TODO:
+            // - Eliminar el manejador del evento en la celda actual (para evitar más clicks).
+            // - Obtener el nodo imagen de la celda, mostrar la imagen y
+            //   almacenar un nuevo objeto al array `couple`.
 
-                if (item1.imgName === item2.imgName) {
-                    locked = false;
+
+            if (/* TODO: Comprobar si en el array ya tenemos una pareja */) {
+
+                // TODO: Levantar la bandera de bloqueo y extraer la pareja.
+
+                if (/* TODO: Comprobar si tenemos una pareja válida */) {
+
+                    // Bajar de nuevo la bandera de bloqueo.
+
                 } else {
-                    setTimeout(function() {
-                        item1.cell.addEventListener('click', clickHandler, false);
-                        item2.cell.addEventListener('click', clickHandler, false);
-                        item1.img.style.opacity = 0;
-                        item2.img.style.opacity = 0;
-                        locked = false;
-                    }, 2000);
+
+                    // Crear un temporizador de 2 segundos para ocultar de nuevo
+                    // ambas imágenes, añadir de nuevo los manejadores del evento
+                    // 'click' de sus celdas y bajar de nuevo la bandera de bloqueo.
+
                 }
+
             }
         }
     }
